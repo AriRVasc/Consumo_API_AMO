@@ -4,33 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    
+    <script src="{{ url_for('static', filename='node_modules/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+    <link rel="stylesheet" href="https://bootswatch.com/5/spacelab/bootstrap.min.css"> <!-- Adiciona o tema Flatly do Bootstrap -->
+
     <style>
         body {
-            background-color: black;
-            color: white;
+            background-color: #f8f9fa; 
+            color: #1C1C1C	; 
             font-family: Arial, sans-serif;
-            margin: 20px;
+            padding: 20px; 
+        }
+        h1 {
+            color: #DC143C	; 
+            text-align: center;
+            font-family: sans-serif;
+        }
+        h1::after {
+            content: url('static/amo.png');
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px; 
+            height: 50px; 
         }
 
-        h1, h2, h3 {
-            color: #00bfff;
+        .temperatura-prevista {
+            text-align: center;
+            font-size: 24px;
+            color: #DC143C	; 
+            margin-bottom: 10px;
         }
 
-        div.container {
+        .container {
             display: flex;
             gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            background-color: #f8f9fa; 
+            padding: 15px; 
+            border-radius: 10px; 
+            max-width: 100%; 
         }
 
-        div.card {
-            background-color: #303030;
-            border: 1px solid #00bfff;
-            border-radius: 8px;
-            padding: 15px;
-            width: 300px;
+        .card {
+            background-color: #ffffff; 
+            border: 1px solid #dee2e6; 
+            border-radius: 5px;
+            padding: 10px;
+            width: 240px;
+            box-sizing: border-box;
+            margin: 10px;
         }
 
-        p {
-            margin: 0;
+        .card p {
+            font-size: 20px; 
+            color: black	; 
+            text-align: center;
+            font-family: sans-serif;
         }
 
         #graphs {
@@ -43,35 +76,54 @@
         .graph {
             width: 48%;
             margin-bottom: 20px;
-        }
+        }       
 
-        #last-data {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            background-color: #333;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
+        img#icone-temperatura {
+            width: auto;
+            height: 100px; 
+            margin-right: 5px; 
+            margin-top: 30px; 
+           
         }
-
-        #last-data h2 {
-            color: #fff;
-            width: 100%;
-        }
-
-        #last-data p {
-            color: #ddd;
-            width: 48%;
-            margin-bottom: 10px;
-        }
-
     </style>
 </head>
 <body>
     <h1>Sensoriamento de temperatura no processo de delivery de alimentos</h1>
 
-    <div id="graphs">
+    <div class="container">
+        <!--
+        <div class="card">
+            <h3 class="text-center">Temperatura Prevista:</h3>
+            <p class="text-center">{{ temperatura_prevista }} °C</p>
+        </div> -->
+        <img id="icone-temperatura" src="{{ url_for('static', filename='/temp.png') }}" alt="Ícone de Temperatura do Alimento">
+        <div class="card">
+            <h3 class="text-center">Temperatura do Alimento:</h3>
+            <p class="text-center"><strong>{{ temperatura_atual_alimento }} °C</strong></p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="card">
+            <h3 class="text-center">Temperatura Interna:</h3>
+            <p class="text-center"><strong>{{ ultima_temperatura_int }} °C</strong></p>
+        </div>
+        <div class="card">
+            <h3 class="text-center">Temperatura Externa:</h3>
+            <p class="text-center"><strong>{{ ultima_temperatura_ext }} °C</strong></p>
+        </div>
+        <div class="card">
+            <h3 class="text-center">Umidade <br> Interna:</h3>
+            <p class="text-center"><strong>{{ ultima_umidade_int }} %</strong></p>
+        </div>
+        
+        <div class="card">
+            <h3 class="text-center">Umidade Externa:</h3>
+            <p class="text-center"><strong>{{ ultima_umidade_ext }} %</strong></p>
+        </div>
+
+    </div>
+
+    <div id="graphs" class="container">
         <div class="graph">
             {{ plot_temp | safe }}
         </div>
@@ -80,34 +132,5 @@
         </div>
     </div>
 
-    <div class="container">
-        <h1>Dados Atuais: </h1>
-
-
-        <div class="card">
-            <h2>Temperatura Interna:</h2>
-            <p>{{ ultima_temperatura_int }} °C</p>
-        </div>
-
-        <div class="card">
-            <h2>Temperatura Externa:</h2>
-            <p>{{ ultima_temperatura_ext }} °C</p>
-        </div>
-
-        <div class="card">
-            <h2>Umidade Interna:</h2>
-            <p>{{ ultima_umidade_int }} %</p>
-            
-        </div>
-        <div class="card">
-            <h2>Umidade Externa:</h2>
-            <p>{{ ultima_umidade_ext }} %</p>
-        </div>
-
-      
-
-    </div>
-
-  
 </body>
 </html>
